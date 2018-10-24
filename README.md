@@ -1,4 +1,4 @@
-# HOS
+# HOS - Hall of Shame
 A webfrontend application which can be used to basically visualize Quotes in _MoSQL_ Format.
 
 ### Specification of MoSQL
