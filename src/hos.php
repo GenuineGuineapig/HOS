@@ -39,7 +39,18 @@ if ($q !== "") {
 //Visualialize
 foreach($rows as $row => $data)
 {
-	$row_data = explode(':', $data);
+        $row_data = explode(':', $data);
+
+        //Correct month…
+        $row_data[4] = intval(( explode('.', $row_data[0])[1] - 1) / 12 ); //year offset
+        $row_data[0] = preg_replace_callback(
+              "/(?<=\.)\d+/",
+              function ($treffer) {
+                return (($treffer[0] - 1) % 12) + 1;
+              },
+              $row_data[0]
+        );
+
 	//Add single :, if :: written
 	for ($key = 1; $key < count($row_data)-1; $key++)
 	{
@@ -52,14 +63,15 @@ foreach($rows as $row => $data)
 	}
 	unset($key);
 
-	//Output!!
-	$info[$row]['name']        = $row_data[1];
-	$info[$row]['date']        = $row_data[0];
-	$info[$row]['description'] = $row_data[2];
-	$info[$row]['context']     = $row_data[3];
+        //Output!!
+        $info[$row]['name']        = $row_data[1];
+        $info[$row]['date']        = $row_data[0];
+        $info[$row]['year']        = $row_data[4] + 2017;
+        $info[$row]['description'] = $row_data[2];
+        $info[$row]['context']     = $row_data[3];
 
 	echo '<li>
- 		<time class="cbp_tmtime" datetime="2013-04-10 18:30"><span>' . $info[$row]['date'] . '</span><span>2017</span> </time>';
+ 		<time class="cbp_tmtime" datetime="2013-04-10 18:30"><span>' . $info[$row]['date'] . '</span><span>' . $info[$row]['year'] . '</span> </time>';
 	echo '<div class="cbp_tmicon fa fa-trophy"></div>
 		<div class="cbp_tmlabel">
 			<h2 class="sub-title-white">' . $info[$row]['name'] . '</h2>';
